@@ -1,0 +1,8 @@
+# os
+.DS_Store
+Thumbs.db
+
+# touch
+*.*.toe
+CrashAutoSave.toe
+TouchDesignerCrash*.dmp
