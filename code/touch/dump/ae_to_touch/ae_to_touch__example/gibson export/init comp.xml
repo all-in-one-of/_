@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<movie service="Xml Gibson-1.0">
+  <composition duration="4.03737070403737" width="1920" height="1080" framerate="29.9700012207031" par="1" bgcolor="0,0,0" name="init comp">
+    <layer enabled="true" index="1" name="Capture.PNG" type="Footage" width="1004" height="866" in="0" out="4.03737070403737" start="0" threeD="false" separated="false" locked="false" istrkmatte="false" hastrkmatte="false" trktype="None">
+      <source duration="0" width="1004" height="866" framerate="0" par="1" video="true" audio="false" missing="false" path="/c/heestand/create/touch/projects/ae_to_touch/ae_to_touch__example/Capture.PNG"/>
+      <group name="Marker"/>
+      <group name="Time_Remap"/>
+      <group name="Motion_Trackers"/>
+      <group name="Masks">
+        <property type="Mask_1">
+          <property type="Mask_Path">
+            <key value="Shape" time="0" closed="true">
+              <vertice pos="502,0" tanIn="277.246948242188,0" tanOut="-277.246948242188,0"/>
+              <vertice pos="0,433" tanIn="0,-239.139297485352" tanOut="0,239.139282226563"/>
+              <vertice pos="502,866" tanIn="-277.246948242188,0" tanOut="277.246948242188,0"/>
+              <vertice pos="1004,433" tanIn="0,239.139282226563" tanOut="0,-239.139297485352"/>
+            </key>
+          </property>
+          <property type="Mask_Feather">
+            <key value="89,89" time="0"/>
+          </property>
+          <property type="Mask_Opacity">
+            <key value="100" time="0"/>
+          </property>
+          <property type="Mask_Expansion">
+            <key value="-53" time="0"/>
+          </property>
+        </property>
+        <property type="Mask_1"/>
+      </group>
+      <group name="Effects"/>
+      <group name="Transform">
+        <property type="Anchor_Point">
+          <key value="502,433,0" time="0"/>
+        </property>
+        <property type="Position">
+          <key value="1550,309,0" time="0"/>
+        </property>
+        <property type="Scale">
+          <key value="20.810623556582,20.810623556582,100" time="0" interp_in="null" interp_out="null" in_speed="0" out_speed="32.967" in_influence="16.666666667" out_influence="16.666666667" spatial_tan_in="null" spatial_tan_out="null"/>
+          <key value="53.810623556582,53.810623556582,100" time="1.001001001001" interp_in="null" interp_out="null" in_speed="0" out_speed="0" in_influence="33.333333" out_influence="16.666666667" spatial_tan_in="null" spatial_tan_out="null"/>
+        </property>
+        <property type="Rotation">
+          <key value="-101" time="0" interp_in="null" interp_out="null" in_speed="0" out_speed="100.899" in_influence="16.666666667" out_influence="16.666666667" spatial_tan_in="null" spatial_tan_out="null"/>
+          <key value="0" time="1.001001001001" interp_in="null" interp_out="null" in_speed="0" out_speed="0" in_influence="33.333333" out_influence="16.666666667" spatial_tan_in="null" spatial_tan_out="null"/>
+        </property>
+        <property type="Opacity">
+          <key value="0" time="0" interp_in="null" interp_out="null" in_speed="0" out_speed="99.9" in_influence="16.666666667" out_influence="16.666666667" spatial_tan_in="null" spatial_tan_out="null"/>
+          <key value="100" time="1.001001001001" interp_in="null" interp_out="null" in_speed="0" out_speed="0" in_influence="33.333333" out_influence="16.666666667" spatial_tan_in="null" spatial_tan_out="null"/>
+        </property>
+      </group>
+      <group name="Layer_Styles"/>
+      <group name="Geometry_Options"/>
+      <group name="Geometry_Options"/>
+      <group name="Material_Options"/>
+      <group name="Audio"/>
+    </layer>
+    <layer enabled="true" index="2" name="Null 1" type="Null" width="100" height="100" in="0" out="4.03737070403737" start="0" threeD="false" separated="null" locked="false" istrkmatte="false" hastrkmatte="false" trktype="None">
+      <group name="Marker"/>
+      <group name="Time_Remap"/>
+      <group name="Motion_Trackers"/>
+      <group name="Masks"/>
+      <group name="Effects"/>
+      <group name="Transform">
+        <property type="Anchor_Point">
+          <key value="0,0,0" time="0"/>
+        </property>
+        <property type="Position">
+          <key value="947,540,0" time="0"/>
+        </property>
+        <property type="Scale">
+          <key value="100,100,100" time="0"/>
+        </property>
+        <property type="Rotation">
+          <key value="26" time="0"/>
+        </property>
+        <property type="Opacity">
+          <key value="0" time="0"/>
+        </property>
+      </group>
+      <group name="Layer_Styles"/>
+      <group name="Geometry_Options"/>
+      <group name="Geometry_Options"/>
+      <group name="Material_Options"/>
+      <group name="Audio"/>
+    </layer>
+    <layer enabled="true" index="3" name="Test Text" type="Text" in="0" out="4.03737070403737" start="0" threeD="false" separated="null" locked="false" istrkmatte="false" hastrkmatte="false" trktype="None">
+      <parent name="Null 1" index="2"/>
+      <typography font="MS-Gothic" size="357" justification="Center" color="0.92156898975372,0.92156898975372,0.92156898975372" text="Test Text"/>
+      <group name="Marker"/>
+      <group name="Text">
+        <property type="Source_Text">
+          <key value="Test Text" time="0"/>
+        </property>
+        <property type="Path_Options">
+          <property type="Path">
+            <key value="0" time="0"/>
+          </property>
+        </property>
+        <property type="Path_Options"/>
+        <property type="More_Options">
+          <property type="Anchor_Point_Grouping">
+            <key value="1" time="0"/>
+          </property>
+          <property type="Grouping_Alignment">
+            <key value="0,0" time="0"/>
+          </property>
+          <property type="Fill_&amp;_Stroke">
+            <key value="1" time="0"/>
+          </property>
+          <property type="Inter-Character_Blending">
+            <key value="1" time="0"/>
+          </property>
+        </property>
+        <property type="More_Options"/>
+        <property type="Animators"/>
+      </group>
+      <group name="Masks"/>
+      <group name="Effects"/>
+      <group name="Transform">
+        <property type="Anchor_Point">
+          <key value="0,0,0" time="0"/>
+        </property>
+        <property type="Position">
+          <key value="-1911,205.74609375,0" time="0.56723390056723" interp_in="null" interp_out="null" in_speed="0" out_speed="2121.21005965645" in_influence="16.666666667" out_influence="16.666666667" spatial_tan_in="-318.5,0,0" spatial_tan_out="318.5,0,0"/>
+          <key value="0.00005374454713,205.74609375,0" time="1.46813480146813" interp_in="null" interp_out="null" in_speed="0" out_speed="0" in_influence="33.333333" out_influence="16.666666667" spatial_tan_in="-318.5,0,0" spatial_tan_out="318.5,0,0"/>
+        </property>
+        <property type="Scale">
+          <key value="100,100,100" time="0"/>
+        </property>
+        <property type="Rotation">
+          <key value="0" time="0"/>
+        </property>
+        <property type="Opacity">
+          <key value="100" time="0"/>
+        </property>
+      </group>
+      <group name="Layer_Styles"/>
+      <group name="Geometry_Options"/>
+      <group name="Material_Options"/>
+      <group name="Audio"/>
+    </layer>
+    <layer enabled="true" index="4" name="bg comp" type="Composition" source="bg" width="1920" height="1080" in="0" out="4.03737070403737" start="0" threeD="false" separated="false" locked="false" istrkmatte="false" hastrkmatte="false" trktype="None">
+      <group name="Marker"/>
+      <group name="Time_Remap"/>
+      <group name="Motion_Trackers"/>
+      <group name="Masks"/>
+      <group name="Effects"/>
+      <group name="Transform">
+        <property type="Anchor_Point">
+          <key value="960,540,0" time="0"/>
+        </property>
+        <property type="Position">
+          <key value="960,540,0" time="0"/>
+        </property>
+        <property type="Scale">
+          <key value="100,100,100" time="0"/>
+        </property>
+        <property type="Rotation">
+          <key value="0" time="0"/>
+        </property>
+        <property type="Opacity">
+          <key value="100" time="0"/>
+        </property>
+      </group>
+      <group name="Layer_Styles"/>
+      <group name="Geometry_Options"/>
+      <group name="Geometry_Options"/>
+      <group name="Material_Options"/>
+      <group name="Audio"/>
+    </layer>
+  </composition>
+</movie>
