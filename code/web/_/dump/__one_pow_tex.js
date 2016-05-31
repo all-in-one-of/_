@@ -1,28 +1,39 @@
-var area = {}
-area.window_width = window.innerWidth
-area.window_height = window.innerHeight
-area.retina_amp = window.devicePixelRatio
-area.width = area.window_width * area.retina_amp
-area.height = area.window_height * area.retina_amp
-area.aspect_ratio = area.width / area.height
+// canvas
+// var canvas = document.getElementById("myCanvas");
+// canvas.width = 1000;
+// canvas.height = 750;
+// canvas.style.width = "500px";
+// canvas.style.height = "375px";
+
+
+//context
+//var context = canvas.getContext('2d');
+
+
+// screen
+var screen = {};
+screen.width = window.innerWidth;
+screen.height = window.innerHeight;
+screen.diagonal = Math.sqrt((2 << screen.width) + (2 << screen.height));
+screen.aspectRatio = screen.width / screen.height;
+// this value changes weirdly when screen size chagnes
+// var devicePixelRatio = window.devicePixelRatio;
+// var backingStoreRatio = context.backingStorePixelRatio;
+// console.log('devicePixelRatio', devicePixelRatio)
+// console.log('backingStoreRatio', backingStoreRatio)
+//ratio = devicePixelRatio / backingStoreRatio;
 
 // renderer
 var renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
-renderer.setSize(area.window_width, area.window_height);
-renderer.setViewport( 0, 0, area.width, area.height );
-canvas = renderer.domElement
-canvas.width = area.width;
-canvas.height = area.height;
-
-document.body.appendChild( canvas );
-
-// screen.diagonal = Math.sqrt((2 << screen.width) + (2 << screen.height));
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+//console.log(document.getElementById('canvas'))
 
 // scene
 var scene = new THREE.Scene();
 
 // cam (53fov == 1h == 1z)
-var camera = new THREE.PerspectiveCamera( 60, area.aspect_ratio, 0.1, 10 );
+var camera = new THREE.PerspectiveCamera( 60, screen.aspectRatio, 0.1, 10 );
 camera.position.z = Math.sqrt(0.75);
 
 
@@ -36,6 +47,96 @@ function onScroll(e) {
 
 }
 
+// [TOOLS]
+function powerRes(orgRes) {
+	var powerRes = 0;
+	var power = 0;
+	while (powerRes < orgRes) {
+		powerRes = 2 << power;
+		power++;
+	}
+	return powerRes;
+}
+
+
+
+//// map painters
+function paint_pow(map){
+	for ( var x = 0; x < map.res.pow; x ++ ) {
+		for ( var y = 0; y < map.res.pow; y ++ ) {
+			var pix = (y * map.res.pow + x) * 4;
+
+			var rand = Math.random();
+			var offset = 0.05 * 255;
+			var color = Math.pow(rand, 27) * (255 - offset) + offset;
+
+			map.arr[ pix     ] = color;
+			map.arr[ pix + 1 ] = color;
+			map.arr[ pix + 2 ] = color;
+			map.arr[ pix + 3 ] = 255;
+			
+			//for ( var c = 0; c < 4; c ++ ) {
+
+				// ramp noise
+				//var ramp = y / map.res.pow;
+				//map.arr[ pixChan ] = Math.random() * ramp * 255 //(random * ramp) * 255;
+				
+			if ((x < 10 || x > map.res.pow - 10) || (y < 10 || y > map.res.pow - 10)) {
+				map.arr[ pix     ] = 255;
+				map.arr[ pix + 1 ] = 0;
+				map.arr[ pix + 2 ] = 0;
+				map.arr[ pix + 3 ] = 255;
+			}
+			// if ((x < 4 || x > bars.map.res.width - 4) || (y < 4 || y > bars.map.res.height - 4)) {
+			// 	bars.map.arr[ pix     ] += 100;
+			// 	// bars.map.arr[ pix + 1 ] = 0;
+			// 	// bars.map.arr[ pix + 2 ] = 0;
+			// 	// bars.map.arr[ pix + 3 ] = 255;
+			// }
+
+			//}
+		}
+	}
+	return map
+}
+function paint_a_border(map){
+	for ( var x = 0; x < map.res.width; x ++ ) {
+		for ( var y = 0; y < map.res.height; y ++ ) {
+			var pix = (y * map.res.pow + x) * 4;
+
+			// var rand = Math.random();
+			// var offset = 0.05 * 255;
+			// var color = Math.pow(rand, 27) * (255 - offset) + offset;
+
+			// map.arr[ pix     ] = color;
+			// map.arr[ pix + 1 ] = color;
+			// map.arr[ pix + 2 ] = color;
+			// map.arr[ pix + 3 ] = 255;
+			
+			// //for ( var c = 0; c < 4; c ++ ) {
+
+			// 	// ramp noise
+			// 	//var ramp = y / map.res.pow;
+			// 	//map.arr[ pixChan ] = Math.random() * ramp * 255 //(random * ramp) * 255;
+				
+			// if ((x < 4 || x > map.res.pow - 4) || (y < 4 || y > map.res.pow - 4)) {
+			// 	map.arr[ pix     ] = 255;
+			// 	map.arr[ pix + 1 ] = 0;
+			// 	map.arr[ pix + 2 ] = 0;
+			// 	map.arr[ pix + 3 ] = 255;
+			// }
+			if ((x < 10 || x > map.res.width - 10) || (y < 10 || y > map.res.height - 10)) {
+				map.arr[ pix + 1] += 200;
+				// map.arr[ pix + 1 ] = 0;
+				// map.arr[ pix + 2 ] = 0;
+				// map.arr[ pix + 3 ] = 255;
+			}
+
+			//}
+		}
+	}
+	return map
+}
 
 //// mesh: bars
 var bars = {}
@@ -44,24 +145,25 @@ bars.thickness = Math.pow(2 / 3, 3)
 // map
 bars.map = {}
 bars.map.res = {}
-bars.map.res.width = Math.round(canvas.width * bars.thickness)
-bars.map.res.height = canvas.height
-bars.map.arr = new Uint8Array(bars.map.res.width * bars.map.res.height * 4)
-bars.map.tex = new THREE.DataTexture(bars.map.arr, bars.map.res.width, bars.map.res.height)
+bars.map.res.width = Math.round(screen.width * bars.thickness)
+bars.map.res.height = screen.height
+bars.map.res.pow = powerRes(Math.max(bars.map.res.width, bars.map.res.height))
+bars.map.arr = new Uint8Array(bars.map.res.pow * bars.map.res.pow * 4)
+paint_a_border(bars.map)
+bars.map.tex = new THREE.DataTexture(bars.map.arr, bars.map.res.pow, bars.map.res.pow)
 bars.map.tex.wrapS = THREE.ClampToEdgeWrapping
 bars.map.tex.wrapT = THREE.ClampToEdgeWrapping
 bars.map.tex.needsUpdate = true
 bars.map.tex.mapping = 300
 // a
 bars.a = {}
-bars.a.geo = new THREE.PlaneGeometry( /*thickness * (screen.diagonal / screen.width)*/ area.aspect_ratio * bars.thickness, 1 ) // << dup //screen.diagonal / screen.width
+bars.a.geo = new THREE.PlaneGeometry( /*thickness * (screen.diagonal / screen.width)*/ /*screen.width / screen.height * */ 0.5, 1 ) // << dup //screen.diagonal / screen.width
 bars.a.mat = new THREE.MeshBasicMaterial({ 
 		map: bars.map.tex,
 		color: 0xffffff,
 		//wireframe: true,
 })
 bars.a.mesh = new THREE.Mesh(bars.a.geo, bars.a.mat)
-// bars.a.mesh.translateY(0.1)
 
 //// scene
 scene.add( bars.a.mesh );
@@ -157,22 +259,14 @@ scene.add( bars.a.mesh );
 //     console.log('mousewheel');
 // });
 
-
-bars.map.tex.image.data = chan_paint_noise(bars.map)
-
-
 function posMod(n, m) {
 	return ((n % m) + m) % m;
 }
-var i = 0
+
 var render = function () {
 	requestAnimationFrame( render );
 	
-	// bars.map = mapper(bars.map, i)
-
-//>>	// bars.map.tex.image.data = pix_effect_scroll(bars.map)
-	// bars.map.tex.needsUpdate = true;
-
+	
 
 	// if (mouse) {
 	// 	raycaster.setFromCamera( mouse, camera );
@@ -238,15 +332,22 @@ var render = function () {
 	// //var noiseMapNew = new Uint8Array( 4 * noiseSize * noiseSize );
 	
 
-	
-	//bars.map.tex.image.data = map
+	// var map = new Uint8Array( 4 * res * res );
+	// for ( var i = 0; i < size * 4; i += 4 ) {
+	// 	var pixDist = res * 4 * scrollPart;
+	// 	map[ i ] = bars.map.tex.image.data[ posMod(i + pixDist, size * 4) +noiseSize*4 * 20 ];
+	//     // noiseMapNew[ i+1 ] = bars.map.tex.image.data[ i+1 +noiseSize*4 ] + 0;
+	//     // noiseMapNew[ i+2 ] = bars.map.tex.image.data[ i+2 +noiseSize*4 ] + 0;
+	//     // noiseMapNew[ i+3 ] = bars.map.tex.image.data[ i+3 +noiseSize*4 ] + 0;
+	// }
+	// bars.map.tex.image.data = map
 
 	// // hexagon.position.x = orgin.x / 500 * -1;
 	// // hexagon.position.y = orgin.y / 500;
 	// bars.map.tex.needsUpdate = true;
 
 	// //scrollDiff = 
-	i++
+
 	renderer.render(scene, camera);
 };
 
@@ -274,71 +375,6 @@ render();
 // }
 
 
-
-
-
-//// map functions
-// map 
-// function mapper(map, i){
-// 	map.arr = chan_paint_noise(map, i)
-// 	map.tex.image.data = chan_paint_noise(map, i)
-// 	map.tex.needsUpdate = true;
-// 	return map
-// }
-// map painters
-function chan_paint_noise(map){
-	for ( var x = 0; x < map.res.width; x ++ ) {
-		for ( var y = 0; y < map.res.height; y ++ ) {
-			var pix = (y * map.res.width + x) * 4;
-
-			var rand = Math.random();
-			var bg = 255 * 0.075;
-			var r = Math.pow(rand, 400) * (255 - bg) + bg;
-			var g = Math.pow(rand, 200) * (255 - bg) + bg;
-			var b = Math.pow(rand, 100) * (255 - bg) + bg;
-
-			map.arr[ pix     ] = r;
-			map.arr[ pix + 1 ] = g;
-			map.arr[ pix + 2 ] = b;
-			map.arr[ pix + 3 ] = 255;
-
-		}
-	}
-	return map.arr
-}
-function chan_paint_border(map){
-	for ( var x = 0; x < map.res.width; x ++ ) {
-		for ( var y = 0; y < map.res.height; y ++ ) {
-			var pix = (y * map.res.width + x) * 4;
-
-			border_size = 10
-			if ((x < border_size || x > map.res.width - border_size - 1) || (y < border_size || y > map.res.height - border_size - 1)) {
-				map.arr[ pix     ] = 255 * 1.0;
-				map.arr[ pix + 1 ] = 255 * 0.25;
-				map.arr[ pix + 2 ] = 255 * 0.0;
-				map.arr[ pix + 3 ] = 255 * 1.0;
-			}
-
-		}
-	}
-	return map.arr
-}
-// // map effectors
-// function pix_effect_scroll(map){
-// 	for ( var x = 0; x < map.res.width; x ++ ) {
-// 		for ( var y = 0; y < map.res.height; y ++ ) {
-// 			for ( var c = 0; c < 4; y ++ ) {
-// 				var chan = (y * map.res.width + x) * 4 + c;
-
-// 				// map[ i ] = map.tex.image.data[ posMod(i + pixDist, size * 4) +noiseSize*4 * 20 ];
-// 			    // noiseMapNew[ i+1 ] = bars.map.tex.image.data[ i+1 +noiseSize*4 ] + 0;
-
-// 				// map.arr[ chan ] = color;
-// 			}
-// 		}
-// 	}
-// 	return map.arr
-// }
 
 
 // by _
