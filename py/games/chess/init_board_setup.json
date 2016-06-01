@@ -1,0 +1,24 @@
+{
+  "teams": {
+    "w": "white",
+    "b": "black",
+  },
+  "setup": {
+    "ki": "king",
+    "qu": "queen",
+    "ho": "horse",
+    "kn": "knight",
+    "ca": "castle",
+    "pa": "pawn",
+  },
+  "board": [
+    ["b:ca", "b:ho", "b:kn", "b:qu", "b:ki", "b:kn", "b:ho", "b:ca"],
+    ["b:pa", "b:pa", "b:pa", "b:pa", "b:pa", "b:pa", "b:pa", "b:pa"],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    ["w:pa", "w:pa", "w:pa", "w:pa", "w:pa", "w:pa", "w:pa", "w:pa"],
+    ["w:ca", "w:ho", "w:kn", "w:qu", "w:ki", "w:kn", "w:ho", "w:ca"],
+  ]
+}
