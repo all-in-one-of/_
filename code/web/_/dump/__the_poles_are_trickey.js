@@ -336,23 +336,31 @@ function chan_paint_border(map){
     map.tex.needsUpdate = true;
 }
 // map effectors
-function pix_effect_scroll(map, scroll_dist) {
-    arr = new Uint8Array(map.res.width * map.res.height * 4)
+function pix_effect_scroll(map, scroll_dist){
+    function cc(x, y){
+        for ( var c = 0; c < 4; c++ ) {
+            var chan = (y * map.res.width + x) * 4 + c;
+            var from_y = modulo((y + scroll_dist), map.res.height)
+            var from_chan = (from_y * map.res.width + x) * 4 + c;
+
+            // map[ i ] = map.tex.image.data[ posMod(i + pixDist, size * 4) +noiseSize*4 * 20 ];
+            // noiseMapNew[ i+1 ] = bars.map.tex.image.data[ i+1 +noiseSize*4 ] + 0;
+
+            map.tex.image.data[ chan ] = map.arr[ from_chan ];
+        }            
+    }
     for ( var x = 0; x < map.res.width; x++ ) {
-        for ( var y = 0; y < map.res.height; y++ ) {
-            for ( var c = 0; c < 4; c++ ) {
-                var chan = (y * map.res.width + x) * 4 + c;
-                var from_y = modulo((y + scroll_dist), map.res.height)
-                var from_chan = (from_y * map.res.width + x) * 4 + c;
-
-                // map[ i ] = map.tex.image.data[ posMod(i + pixDist, size * 4) +noiseSize*4 * 20 ];
-                // noiseMapNew[ i+1 ] = bars.map.tex.image.data[ i+1 +noiseSize*4 ] + 0;
-
-                arr[ chan ] = map.tex.image.data[ from_chan ];
-            }            
+        if (scroll_dist > 0) {
+            for ( var y = 0; y < map.res.height; y++ ) {
+                cc(x, y)
+            }
+        } else {
+            for ( var y = map.res.height - 1; y >= 0; y-- ) {
+                cc(x, y)
+            }
         }
     }
-    map.tex.image.data = arr
+    //map.tex.image.data = map.arr
     map.tex.needsUpdate = true;
         
     // return map.arr
