@@ -1,0 +1,7 @@
+moves_zip_path = 'C:\\TEMP\\Temp1_moves_export.zip\\json.zip\\json\\daily\\places\\places_20131127.json'
+
+import json
+
+with open(moves_zip_path) as f:
+    data = json.load(f)
+print(data)

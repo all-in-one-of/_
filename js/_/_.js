@@ -33,7 +33,6 @@ var scrollAmp = -1;
 window.addEventListener('mousewheel', onScroll);
 function onScroll(e) {  
     scrollNow += e.deltaY * scrollAmp;
-
 }
 
 
@@ -48,6 +47,8 @@ bars.map.res.width = Math.round(canvas.width * bars.thickness)
 bars.map.res.height = canvas.height
 bars.map.arr = new Uint8Array(bars.map.res.width * bars.map.res.height * 4)
 bars.map.tex = new THREE.DataTexture(bars.map.arr, bars.map.res.width, bars.map.res.height)
+// bars.map.tex.wrapS = THREE.RepeatWrapping
+// bars.map.tex.wrapT = THREE.RepeatWrapping
 bars.map.tex.wrapS = THREE.ClampToEdgeWrapping
 bars.map.tex.wrapT = THREE.ClampToEdgeWrapping
 bars.map.tex.needsUpdate = true
@@ -74,6 +75,17 @@ scene.add( bars.a.mesh );
 //var raycaster = new THREE.Raycaster();
 
 
+// mouse pos
+var mouse_x;
+var mouse_y;
+var mouse_norm_x;
+var mouse_norm_y;
+document.onmousemove = function(e){
+    mouse_x = e.pageX;
+    mouse_y = e.pageY;
+    mouse_norm_x = mouse_x - (area.width - bars.map.res.width) / 2
+    mouse_norm_y = mouse_y * -1 + bars.map.res.height
+}
 
 
 
@@ -180,7 +192,11 @@ var render = function () {
 
     //var slope = Math.round(scroll / 4) * -1;
     //var noiseMapNew = new Uint8Array( 4 * noiseSize * noiseSize );
-    
+   
+
+    chan_paint_over_mouse(bars.map)
+
+
     if (scrollPart != 0) {
         pix_effect_scroll(bars.map, scrollPart)
     }
@@ -284,8 +300,21 @@ function modulo(pos, whole){
     }
     return mod
 }
-console.log(modulo(-20, 10))
 
+function pix_by_mouse(x, y, radius){
+    if ((x < mouse_norm_x + radius && x > mouse_norm_x - radius - 1) &&
+        (y < mouse_norm_y + radius && y > mouse_norm_y - radius - 1)) {
+        return true
+    } else {
+        return false
+    }
+}
+function pix_to_mouse(x, y){
+    dist_x = x - mouse_norm_x
+    dist_y = y - mouse_norm_y
+    dist = Math.sqrt((2 << dist_x) + (2 << dist_y))
+    return dist
+}
 
 //// map functions
 // map 
@@ -335,6 +364,25 @@ function chan_paint_border(map){
     map.tex.image.data = map.arr
     map.tex.needsUpdate = true;
 }
+function chan_paint_over_mouse(map){
+    arr = map.tex.image.data
+    for ( var x = 0; x < map.res.width; x++ ) {
+        for ( var y = 0; y < map.res.height; y++ ) {
+            var pix = (y * map.res.width + x) * 4;
+
+            radius = 1
+            if (pix_by_mouse(x, y, radius)) {
+                arr[ pix     ] = 255 * 1.0;
+                arr[ pix + 1 ] = 255 * 1.0;
+                arr[ pix + 2 ] = 255 * 1.0;
+                arr[ pix + 3 ] = 255 * 1.0;
+            }
+
+        }
+    }
+    map.tex.image.data = arr
+    map.tex.needsUpdate = true;
+}
 // map effectors
 function pix_effect_scroll(map, scroll_dist) {
     arr = new Uint8Array(map.res.width * map.res.height * 4)
@@ -342,7 +390,9 @@ function pix_effect_scroll(map, scroll_dist) {
         for ( var y = 0; y < map.res.height; y++ ) {
             for ( var c = 0; c < 4; c++ ) {
                 var chan = (y * map.res.width + x) * 4 + c;
-                var from_y = modulo((y + scroll_dist), map.res.height)
+                //scroll = Math.round((scroll_dist * pix_to_mouse(x, y)) / 10000)
+                scroll = scroll_dist
+                var from_y = modulo((y + scroll), map.res.height)
                 var from_chan = (from_y * map.res.width + x) * 4 + c;
 
                 // map[ i ] = map.tex.image.data[ posMod(i + pixDist, size * 4) +noiseSize*4 * 20 ];
